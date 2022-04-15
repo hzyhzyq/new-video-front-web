@@ -2,20 +2,26 @@
   <div>
     <Header></Header>
     <div class="main">
-      <div><el-breadcrumb separator="/">
-        <el-breadcrumb-item><a href="/" class="breadcrumb">Index</a></el-breadcrumb-item>
-        <el-breadcrumb-item><a href="/" class="breadcrumb">Type</a></el-breadcrumb-item>
-        <el-breadcrumb-item><a class="breadcrumb">VideoName</a></el-breadcrumb-item>
-      </el-breadcrumb></div>
+      <div class="top-box">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item><a href="/" class="breadcrumb">Index</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/" class="breadcrumb">Type</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a class="breadcrumb">VideoName</a></el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div class="title-box">
-        <p style="font-size: 35px;">VideonName</p>
-        <p style="font-size: 15px">Date</p>
-        <div class="avatar"><el-avatar :size="50" :src="circleUrl" ></el-avatar><p style="font-size: 15px;margin: 0;">Creater</p></div>
+        <div class="title">
+          <p style="font-size: 35px;">VideoName</p>
+          <p style="font-size: 15px">Date</p>
+        </div>
+        <div class="avatar">
+          <el-avatar :size="50" :src="circleUrl"></el-avatar>
+          <p style="font-size: 15px;margin: 0;">Creater</p></div>
       </div>
       <div class="video-box">
+        <div class="video-play-box"></div>
+        <div class="recommend-video-box"><RecommendVideoList></RecommendVideoList></div>
       </div>
-      <div class="recommend-video-box"></div>
-
     </div>
 
     <Footer></Footer>
@@ -25,15 +31,17 @@
 <script>
 import Header from "./My_Header";
 import Footer from "./My_Footer";
+import RecommendVideoList from "./RecommendVideoList";
 
 export default {
   name: "Video",
   components: {
     Header,
-    Footer
+    Footer,
+    RecommendVideoList
   },
-  data(){
-    return{
+  data() {
+    return {
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
     }
   }
@@ -41,46 +49,66 @@ export default {
 </script>
 
 <style scoped>
-*{
+* {
   margin: 0;
   padding: 0;
 }
-p{
+
+p {
   margin: 15px 0 0 0;
 }
+
 .main {
   position: relative;
   width: 90%;
   height: auto;
   padding: 3% 5% 3% 5%;
 }
+
 .breadcrumb {
   font-size: 15px;
 }
-.title-box{
+
+.title-box {
+  position: relative;
   width: 100%;
   height: auto;
-  margin: 5% 0 0 0;
+  margin: 2% 0 0 0;
 }
-.avatar{
+.title{
   position: relative;
-  float: right;
-  width: 20%;
+  width: 80%;
+  text-align: left;
+}
+.avatar {
+  position: absolute;
+  top:0;
+  left: 75%;
+  width: 25%;
   text-align: center;
-  top:-80px;
 }
 .video-box{
-  width: 75%;
-  height: 0;
-  padding-bottom: 40%;
-  background-color: black;
-  margin-top: 20px;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
-.recommend-video-box{
-  width: 20%;
-  left: 80%;
-  height: 500px;
+.video-play-box {
+  position: relative;
+  top:20px;
+  width: 70%;
+  height: 0;
+  padding-bottom: 60%;
   background-color: black;
+  border-radius: 5px;
+}
+
+.recommend-video-box {
+  position: absolute;
+  top: 0;
+  left: 75%;
+  width: 25%;
+  height: auto;
   margin-top: 20px;
+  display: inline-block;
 }
 </style>
