@@ -2,10 +2,8 @@
   <div>
     <div class="top">
       <div class="left"> <el-menu
-        :default-active="activeIndex2"
         class="el-menu-demo"
         mode="horizontal"
-        @select="handleSelect"
         background-color="#545c64"
         text-color="#ffd04b"
         active-text-color="#ffd04b">
@@ -13,10 +11,8 @@
       </el-menu></div>
       <div class="right">
         <el-menu
-          :default-active="activeIndex2"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#fff">
@@ -30,7 +26,7 @@
 
 <script>
 export default {
-  name: "header"
+  name: "my_header"
 }
 </script>
 
@@ -39,17 +35,14 @@ export default {
   position: relative;
   width: 100%;
   height: auto;
-  background:#545c64;
 }
 .left{
   position: relative;
-  background: red;
-  font-size: larger;
+  top:0px;
 }
 .right{
   position: absolute;
   top:0px;
   right: 5%;
-  background: red;
 }
 </style>
