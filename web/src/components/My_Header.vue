@@ -5,8 +5,8 @@
         class="el-menu-demo"
         mode="horizontal"
         background-color="#545c64"
-        text-color="#ffd04b"
-        active-text-color="#ffd04b">
+        text-color="white"
+        active-text-color="#white">
         <el-menu-item index="1" style="left:5%"><a href="/home">Video Website</a></el-menu-item>
       </el-menu></div>
       <div class="right">

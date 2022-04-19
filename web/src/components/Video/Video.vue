@@ -16,29 +16,37 @@
         </div>
         <div class="avatar">
           <el-avatar :size="50" :src="circleUrl"></el-avatar>
-          <p style="font-size: 15px;margin: 0;">Creater</p></div>
+          <p style="font-size: 15px;margin: 0;">Uploader</p></div>
       </div>
       <div class="video-box">
-        <div class="video-play-box"></div>
+        <div class="video-play-box"><VideoPlayArea></VideoPlayArea></div>
         <div class="recommend-video-box"><RecommendVideoList></RecommendVideoList></div>
       </div>
     </div>
+    <div class="comment-box">
+      <CommentArea></CommentArea>
+    </div>
+
 
     <Footer></Footer>
   </div>
 </template>
 
 <script>
-import Header from "./My_Header";
-import Footer from "./My_Footer";
+import Header from "../My_Header";
+import Footer from "../My_Footer";
 import RecommendVideoList from "./RecommendVideoList";
+import VideoPlayArea from "./VideoPlayArea";
+import CommentArea from "./CommentArea";
 
 export default {
   name: "Video",
   components: {
     Header,
     Footer,
-    RecommendVideoList
+    RecommendVideoList,
+    VideoPlayArea,
+    CommentArea
   },
   data() {
     return {
@@ -96,9 +104,7 @@ p {
   position: relative;
   top:20px;
   width: 70%;
-  height: 0;
-  padding-bottom: 60%;
-  background-color: black;
+  height: 100%;
   border-radius: 5px;
 }
 
@@ -110,5 +116,11 @@ p {
   height: auto;
   margin-top: 20px;
   display: inline-block;
+}
+.comment-box{
+  position: relative;
+  padding-left: 5%;
+  width: 63%;
+  height: 100%;
 }
 </style>
