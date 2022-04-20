@@ -4,7 +4,6 @@ import Index from "../components/Index";
 import Video from "../components/Video/Video";
 import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
-import CommentArea from "../components/Video/CommentArea"
 
 Vue.use(Router)
 
@@ -34,12 +33,10 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },{
+      path: '/test',
+      name: 'Register',
+      component: Register
     },
-    {
-      path:'/test',
-      name:'CommentArea',
-      component:CommentArea
-
-    }
   ]
 })

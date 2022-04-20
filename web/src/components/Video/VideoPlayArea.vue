@@ -1,16 +1,20 @@
 <template>
   <div class="body">
-    <div class="video-play-box"></div>
+    <div class="video-play-box">
+      <div class="video" id="wrapper">
+
+      </div>
+    </div>
     <div class="controller">
       <div style="position:absolute;width: 15%;height:100%;left: 5%;padding-top: 10px">
         <p class="demonstration">弹幕</p>
-        <el-switch
-          style="top:8px"
-          v-model="value">
-        </el-switch>
+        <el-switch style="top:8px" v-model="value"></el-switch>
       </div>
       <div style="position:relative;width: 60%;height:100%;left: 20%;padding-top: 7px">
-        <Slider></Slider>
+        <div class="block">
+          <span class="demonstration">弹幕不透明度</span>
+          <el-slider class="slider" v-model="slider" :step="10" show-stops></el-slider>
+        </div>
       </div>
     </div>
     <div class="comment-box">
@@ -25,7 +29,7 @@
       <el-button-group>
         <el-button type="danger" icon="el-icon-share" round></el-button>
         <el-button type="warning" icon="el-icon-star-off" round></el-button>
-        <el-button type="primary" icon="el-icon-bell" round >subscribe</el-button>
+        <el-button type="primary" icon="el-icon-bell" round>subscribe</el-button>
       </el-button-group>
       <div style="float: right;margin-right: 5%">
         <el-button type="success" icon="el-icon-download" round></el-button>
@@ -40,19 +44,34 @@
 </template>
 
 <script>
-import Slider from "./Slider";
-
+import Chimee from 'chimee';
+import hls from 'chimee-kernel-hls';
 
 export default {
   name: "VideoPlayArea",
   data() {
     return {
       value: true,
-      input: ''
+      input: '',
+      slider: 50,
     }
   },
-  components: {
-    Slider
+  mounted: function () {
+    this.xc();
+  },
+  methods: {
+    xc() {
+      this.player = new Chimee({
+        wrapper: document.getElementById("wrapper"),
+        src: 'http://192.168.211.129/vod/example.mp4/index.m3u8',
+        controls: true,
+        isLive: false,
+        autoplay: false,
+        kernels: {
+          hls
+        }
+      });
+    }
   }
 }
 </script>
@@ -74,21 +93,94 @@ export default {
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
-  background-color: #545c64;
   border-radius: 5px;
+}
+
+.video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: #545c64;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-left: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
+}
+
+.comment {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 20%;
+  height: auto;
+  background: black;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.comment > ul {
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.comment > ul > li {
+  list-style: none;
+  margin-left: 5%;
+  margin-right: 5%;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: aliceblue;
+}
+
+.over {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 998;
+}
+
+.big {
+  position: absolute;
+  margin-left: 10%;
+  margin-top: 3%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  z-index: 999;
+  display: none;
 }
 
 .controller {
   position: relative;
   width: 100%;
   height: auto;
+  border-left: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
+}
+
+.block {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .demonstration {
-
   font-size: 14px;
   color: black;
   line-height: 14px;
+}
+
+.slider {
+  width: 80%;
+  display: block;
 }
 
 .comment-box {
@@ -96,15 +188,19 @@ export default {
   width: 100%;
   height: auto;
   display: inline-block;
+  border-left: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
 }
 
 .like-box {
   position: relative;
-  width: 100%;
+  width: 97.5%;
   padding-top: 2%;
   padding-left: 2.5%;
   padding-bottom: 2.5%;
   height: auto;
+  border-left: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
 }
 
 .introduction-box {
@@ -113,8 +209,9 @@ export default {
   width: 90%;
   height: auto;
   background-color: white;
+  border-left: 1px solid #EBEEF5;
+  border-right: 1px solid #EBEEF5;
   border-bottom: 1px solid #EBEEF5;
-  border-top: 1px solid #EBEEF5;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }

@@ -10,6 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "chimee": "^0.12.0",
+    "chimee-kernel-flv": "^1.4.11",
+    "chimee-kernel-hls": "^1.3.2",
+    "chimee-plugin-controlbar": "^0.4.11",
+    "chimee-plugin-danmu": "^0.1.3",
     "element-ui": "^2.15.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
@@ -43,6 +48,7 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
+    "videojs-skin-twitchy": "^2.0.1",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",

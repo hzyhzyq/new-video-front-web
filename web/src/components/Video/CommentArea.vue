@@ -21,7 +21,7 @@ export default {
   name: "CommentArea",
   data() {
     return {
-
+      circleUrl:'',
     }
   }
 }
