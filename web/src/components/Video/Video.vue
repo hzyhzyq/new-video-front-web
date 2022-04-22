@@ -19,15 +19,17 @@
           <p style="font-size: 15px;margin: 0;">Uploader</p></div>
       </div>
       <div class="video-box">
-        <div class="video-play-box"><VideoPlayArea></VideoPlayArea></div>
-        <div class="recommend-video-box"><RecommendVideoList></RecommendVideoList></div>
+        <div class="video-play-box">
+          <VideoPlayArea></VideoPlayArea>
+        </div>
+        <div class="recommend-video-box">
+          <RecommendVideoList></RecommendVideoList>
+        </div>
       </div>
     </div>
     <div class="comment-box">
       <CommentArea></CommentArea>
     </div>
-
-
     <Footer></Footer>
   </div>
 </template>
@@ -70,6 +72,7 @@ p {
   position: relative;
   width: 90%;
   height: auto;
+  min-width: 850px;
   padding: 3% 5% 3% 5%;
 }
 
@@ -83,26 +86,30 @@ p {
   height: auto;
   margin: 2% 0 0 0;
 }
-.title{
+
+.title {
   position: relative;
   width: 80%;
   text-align: left;
 }
+
 .avatar {
   position: absolute;
-  top:0;
+  top: 0;
   left: 75%;
   width: 25%;
   text-align: center;
 }
-.video-box{
+
+.video-box {
   position: relative;
   width: 100%;
   height: 100%;
 }
+
 .video-play-box {
   position: relative;
-  top:20px;
+  top: 20px;
   width: 70%;
   height: 100%;
   border-radius: 5px;
@@ -117,7 +124,8 @@ p {
   margin-top: 20px;
   display: inline-block;
 }
-.comment-box{
+
+.comment-box {
   position: relative;
   padding-left: 5%;
   width: 63%;

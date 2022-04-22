@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p>Footer</p>
+    <div class="bottom">
+    </div>
   </div>
 
 </template>
@@ -12,5 +13,10 @@ export default {
 </script>
 
 <style scoped>
-
+.bottom {
+  width: 100%;
+  height: 100px;
+  margin-top: 50px;
+  background-color: #545c64;
+}
 </style>

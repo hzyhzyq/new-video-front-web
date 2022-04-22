@@ -2,7 +2,6 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
-
       </div>
     </div>
     <div class="controller">
@@ -21,7 +20,7 @@
       <div style="float: left;width: auto;margin-left: 3%;height: 100%;padding-top:5px">
         <el-button type="primary" round size="small">发送弹幕</el-button>
       </div>
-      <div style="float: left;left:15%;width: 70%;margin-left: 5%;display: inline-block">
+      <div style="float: right;width: 75%;margin-right: 5%;">
         <el-input v-model="input" placeholder="请输入内容"></el-input>
       </div>
     </div>

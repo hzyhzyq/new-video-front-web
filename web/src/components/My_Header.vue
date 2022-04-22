@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="top">
-      <div class="left"> <el-menu
-        class="el-menu-demo"
-        mode="horizontal"
-        background-color="#545c64"
-        text-color="white"
-        active-text-color="#white">
-        <el-menu-item index="1" style="left:5%"><a href="/home">Video Website</a></el-menu-item>
-      </el-menu></div>
+      <div class="left">
+        <el-menu
+          class="el-menu-demo"
+          mode="horizontal"
+          background-color="#545c64"
+          text-color="white"
+          active-text-color="#white">
+          <el-menu-item index="1" style="left:5%"><a href="/home">Video Website</a></el-menu-item>
+        </el-menu>
+      </div>
       <div class="right">
         <el-menu
           class="el-menu-demo"
@@ -31,21 +33,24 @@ export default {
 </script>
 
 <style scoped>
-a{
-  text-decoration:none;
+a {
+  text-decoration: none;
 }
-.top{
+
+.top {
   position: relative;
   width: 100%;
   height: auto;
 }
-.left{
+
+.left {
   position: relative;
-  top:0px;
+  top: 0px;
 }
-.right{
+
+.right {
   position: absolute;
-  top:0px;
+  top: 0px;
   right: 5%;
 }
 </style>
