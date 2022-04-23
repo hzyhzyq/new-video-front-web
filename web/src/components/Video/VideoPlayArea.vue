@@ -50,17 +50,34 @@ export default {
   name: "VideoPlayArea",
   data() {
     return {
+      player:{},
+      bulletChattingList:[],
+      bulletChattingIndex:0,
+      mainIntervalId:0,
+      commentBox:[false,true,true,false],
+
       value: true,
       input: '',
       slider: 50,
+
+
     }
+  },
+  created() {
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting").then((res)=>{
+      console.log(res.data);
+      this.bulletChattingList=res.data.results;
+    });
   },
   mounted: function () {
     this.xc();
+    this.player = this.getPlayer();
+    this.player.addEventListener('playing',this.loopExecution());
+/*    this.player.addEventListener('pause',this.loopExecution());*/
   },
   methods: {
     xc() {
-      this.player = new Chimee({
+      new Chimee({
         wrapper: document.getElementById("wrapper"),
         src: 'http://192.168.211.129/vod/example.mp4/index.m3u8',
         controls: true,
@@ -70,6 +87,44 @@ export default {
           hls
         }
       });
+    },
+    getPlayer(){
+      return document.getElementsByTagName("video")[0];
+    },
+    loopExecution(){
+      this.mainIntervalId = setInterval(this.checkNextBulletChattingList,1000);
+    },
+    checkNextBulletChattingList(){
+      let currentTime = this.getCurrentPlaybackProgress();
+      console.log(this.bulletChattingList[this.bulletChattingIndex].progress);
+      console.log(currentTime+'ts'+this.mainIntervalId);
+      if(currentTime >= (this.bulletChattingList[this.bulletChattingIndex].progress)){
+        /*if(currentTime-(this.bulletChattingList[this.bulletChattingIndex].progress) >3){
+          this.bulletChattingIndex++;
+          continue;
+        }*/
+        let i = 0;
+        while (this.commentBox[i] == false){
+          if(i == 4){
+            break;
+          }
+          i++;
+        }
+        if(i!=4){
+          this.commentBox[i] = false;
+          this.bulletChattingIndex++;
+          //显示box
+          //设定持续时间
+          console.log("ok"+i);
+        }
+      }
+    },
+    getCurrentPlaybackProgress(){
+      let currentTime = this.player.currentTime.toFixed(0);
+      return currentTime;
+    },
+    closeLoopExecution(){
+      clearInterval(this.mainIntervalId);
     }
   }
 }
