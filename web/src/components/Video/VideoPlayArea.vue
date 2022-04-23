@@ -2,6 +2,10 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
+        <div class="danmaku-box" style="top:0">
+          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
+          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        </div>
       </div>
     </div>
     <div class="controller">
@@ -50,12 +54,21 @@ export default {
   name: "VideoPlayArea",
   data() {
     return {
-      player:{},
-      bulletChattingList:[],
-      bulletChattingIndex:0,
-      mainIntervalId:0,
-      commentBox:[false,true,true,false],
-
+      player: {},
+      bulletChattingList: [{
+        progress: "0",
+        userId: "",
+        userName: "",
+        content: "",
+        replay: [{
+          userName: "",
+          userId: "",
+          content: ""
+        }]
+      }],
+      bulletChattingIndex: 0,
+      mainIntervalId: 0,
+      commentBox: [false, true, true, false],
       value: true,
       input: '',
       slider: 50,
@@ -64,16 +77,16 @@ export default {
     }
   },
   created() {
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting").then((res)=>{
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting").then((res) => {
       console.log(res.data);
-      this.bulletChattingList=res.data.results;
+      this.bulletChattingList = res.data.bulletChattingList;
     });
   },
   mounted: function () {
     this.xc();
     this.player = this.getPlayer();
-    this.player.addEventListener('playing',this.loopExecution());
-/*    this.player.addEventListener('pause',this.loopExecution());*/
+    this.player.addEventListener('playing', this.loopExecution);
+    this.player.addEventListener('pause', this.closeLoopExecution());
   },
   methods: {
     xc() {
@@ -88,42 +101,52 @@ export default {
         }
       });
     },
-    getPlayer(){
+    getPlayer() {
       return document.getElementsByTagName("video")[0];
     },
-    loopExecution(){
-      this.mainIntervalId = setInterval(this.checkNextBulletChattingList,1000);
+    loopExecution() {
+      this.mainIntervalId = setInterval(this.checkNextBulletChattingList, 1000);
     },
-    checkNextBulletChattingList(){
+    checkNextBulletChattingList() {
       let currentTime = this.getCurrentPlaybackProgress();
-      console.log(this.bulletChattingList[this.bulletChattingIndex].progress);
-      console.log(currentTime+'ts'+this.mainIntervalId);
-      if(currentTime >= (this.bulletChattingList[this.bulletChattingIndex].progress)){
-        /*if(currentTime-(this.bulletChattingList[this.bulletChattingIndex].progress) >3){
+      let progress = -1;
+      if (this.bulletChattingList[this.bulletChattingIndex] != null) {
+        progress = this.bulletChattingList[this.bulletChattingIndex].progress;
+      }
+
+      console.log(currentTime + 'ts' + this.mainIntervalId);
+      console.log(progress);
+      while (0 <= progress && currentTime >= progress) {
+        //如果超时超过3秒，移除顶部
+        if (currentTime - progress > 3) {
           this.bulletChattingIndex++;
+          progress = this.bulletChattingList[this.bulletChattingIndex].progress;
           continue;
-        }*/
+        }
+        //查找是否有空的box用于显示
         let i = 0;
-        while (this.commentBox[i] == false){
-          if(i == 4){
+        while (this.commentBox[i] == false) {
+          if (i == 4) {
             break;
           }
           i++;
         }
-        if(i!=4){
+        //存在空的box,显示
+        if (i != 4) {
           this.commentBox[i] = false;
           this.bulletChattingIndex++;
+          progress = this.bulletChattingList[this.bulletChattingIndex].progress;
           //显示box
           //设定持续时间
-          console.log("ok"+i);
+          console.log("ok" + i);
         }
       }
     },
-    getCurrentPlaybackProgress(){
+    getCurrentPlaybackProgress() {
       let currentTime = this.player.currentTime.toFixed(0);
       return currentTime;
     },
-    closeLoopExecution(){
+    closeLoopExecution() {
       clearInterval(this.mainIntervalId);
     }
   }
@@ -141,7 +164,12 @@ export default {
   width: 100%;
   height: 100%;
 }
-
+p{
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+}
 .video-play-box {
   position: relative;
   width: 100%;
@@ -162,15 +190,16 @@ export default {
   border-right: 1px solid #EBEEF5;
 }
 
-.comment {
+.danmaku-box {
   position: absolute;
-  top: 10%;
-  left: 20%;
   width: 20%;
   height: auto;
+  padding: 2% 3%;
   background: black;
   opacity: 0.5;
-  text-align: center;
+  text-align: left;
+  color: #EBEEF5;
+  font-size: 18px;
 }
 
 .comment > ul {
