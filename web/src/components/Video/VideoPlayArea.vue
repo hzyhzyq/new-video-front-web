@@ -2,9 +2,24 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
-        <div class="danmaku-box" style="top:0">
+        <div class="danmaku-box" id = "danmaku-box-0" style="top:10%;left: 20%">
           <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
           <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        </div>
+        <div class="danmaku-box" id = "danmaku-box-1" style="top:10%;right: 20%">
+          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
+          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        </div>
+        <div class="danmaku-box" id = "danmaku-box-2" style="top:50%;left: 20%">
+          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
+          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        </div>
+        <div class="danmaku-box" id = "danmaku-box-3" style="top:50%;right: 20%">
+          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
+          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        </div>
+        <div class="danmaku-box" id = "danmaku-box-4" style="top:30%;right: 40%">
+          <p>ababa</p>
         </div>
       </div>
     </div>
@@ -54,7 +69,9 @@ export default {
   name: "VideoPlayArea",
   data() {
     return {
+      //video播放器
       player: {},
+      //弹幕列表
       bulletChattingList: [{
         progress: "0",
         userId: "",
@@ -66,9 +83,14 @@ export default {
           content: ""
         }]
       }],
+      //当前弹幕列表的位置
       bulletChattingIndex: 0,
+      //主计时器
       mainIntervalId: 0,
+      //弹幕框是否已经显示
       commentBox: [false, true, true, false],
+      //每个弹幕框显示的弹幕列表中的哪个
+      commentBoxIndex:[0,0,0,0],
       value: true,
       input: '',
       slider: 50,
