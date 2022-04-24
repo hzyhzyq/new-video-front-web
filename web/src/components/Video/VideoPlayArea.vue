@@ -2,23 +2,37 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
-        <div class="danmaku-box" id = "danmaku-box-0" style="top:10%;left: 20%">
-          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
-          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        <div id="danmakuReplyBox" style="position: absolute;width: 100%;height: 100%;z-index: 9999;background-color: #EBEEF5;display: none">
+          <div style="position: absolute;width:5%;height: 0;padding-bottom:5%;top: 3%;right: 2%;">
+            <el-button v-on:click="closeCommentDetail()" type="danger" icon="el-icon-close" circle style="position:absolute;width:100%;height: 100%;padding: 0"></el-button>
+          </div>
+          <DanmakuReply ref="danmakuReply"></DanmakuReply>
         </div>
-        <div class="danmaku-box" id = "danmaku-box-1" style="top:10%;right: 20%">
-          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
-          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        <div v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%">
+          <p>{{ bulletChattingList[commentBoxIndex[0]].content }}</p>
+          <p v-for="value in bulletChattingList[commentBoxIndex[0]].replay">>>{{ value.userName }}:&nbsp{{
+              value.content
+            }}</p>
         </div>
-        <div class="danmaku-box" id = "danmaku-box-2" style="top:50%;left: 20%">
-          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
-          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        <div v-on:click="showCommentDetail(1)" class="danmaku-box" id="danmaku-box-1" style="top:5%;right: 10%">
+          <p>{{ bulletChattingList[commentBoxIndex[1]].content }}</p>
+          <p v-for="value in bulletChattingList[commentBoxIndex[1]].replay">>>{{ value.userName }}:&nbsp{{
+              value.content
+            }}</p>
         </div>
-        <div class="danmaku-box" id = "danmaku-box-3" style="top:50%;right: 20%">
-          <p>{{bulletChattingList[bulletChattingIndex].content}}</p>
-          <p v-for="value in bulletChattingList[bulletChattingIndex].replay">>>{{value.userName}}:&nbsp{{value.content}}</p>
+        <div v-on:click="showCommentDetail(2)" class="danmaku-box" id="danmaku-box-2" style="top:50%;left: 10%">
+          <p>{{ bulletChattingList[commentBoxIndex[2]].content }}</p>
+          <p v-for="value in bulletChattingList[commentBoxIndex[2]].replay">>>{{ value.userName }}:&nbsp{{
+              value.content
+            }}</p>
         </div>
-        <div class="danmaku-box" id = "danmaku-box-4" style="top:30%;right: 40%">
+        <div v-on:click="showCommentDetail(3)" class="danmaku-box" id="danmaku-box-3" style="top:50%;right: 10%">
+          <p>{{ bulletChattingList[commentBoxIndex[3]].content }}</p>
+          <p v-for="value in bulletChattingList[commentBoxIndex[3]].replay">>>{{ value.userName }}:&nbsp{{
+              value.content
+            }}</p>
+        </div>
+        <div v-on:click="showCommentDetail(4)" class="danmaku-box" id="danmaku-box-4" style="top:30%;left: 40%">
           <p>ababa</p>
         </div>
       </div>
@@ -64,6 +78,7 @@
 <script>
 import Chimee from 'chimee';
 import hls from 'chimee-kernel-hls';
+import DanmakuReply from './DanmakuReply'
 
 export default {
   name: "VideoPlayArea",
@@ -73,13 +88,12 @@ export default {
       player: {},
       //弹幕列表
       bulletChattingList: [{
+        commentId: "",
         progress: "0",
-        userId: "",
         userName: "",
         content: "",
         replay: [{
           userName: "",
-          userId: "",
           content: ""
         }]
       }],
@@ -87,10 +101,13 @@ export default {
       bulletChattingIndex: 0,
       //主计时器
       mainIntervalId: 0,
-      //弹幕框是否已经显示
-      commentBox: [false, true, true, false],
+      //弹幕框是否可以用于显示
+      commentBox: [true, true, true, true, true],
       //每个弹幕框显示的弹幕列表中的哪个
-      commentBoxIndex:[0,0,0,0],
+      commentBoxIndex: [0, 0, 0, 0],
+      //每个框的5秒倒计时id
+      commentBoxTimeout: [-1, -1, -1, -1, -1],
+      //
       value: true,
       input: '',
       slider: 50,
@@ -108,13 +125,14 @@ export default {
     this.xc();
     this.player = this.getPlayer();
     this.player.addEventListener('playing', this.loopExecution);
-    this.player.addEventListener('pause', this.closeLoopExecution());
+    this.player.addEventListener('pause', this.closeLoopExecution);
+    this.player.addEventListener('seeking', this.resetBulletChattingIndex)
   },
   methods: {
     xc() {
       new Chimee({
         wrapper: document.getElementById("wrapper"),
-        src: 'http://192.168.211.129/vod/example.mp4/index.m3u8',
+        src: 'http://192.168.211.130/vod/example.mp4/index.m3u8',
         controls: true,
         isLive: false,
         autoplay: false,
@@ -126,23 +144,23 @@ export default {
     getPlayer() {
       return document.getElementsByTagName("video")[0];
     },
+    //播放,重启计时器，每隔一秒检测是否打印弹幕
     loopExecution() {
+      for (let i = 0; i < 4; i++) {
+        if (this.commentBoxTimeout[i] == -2) {
+          this.autoCloseBulletChattingBox(i)
+        }
+      }
       this.mainIntervalId = setInterval(this.checkNextBulletChattingList, 1000);
     },
     checkNextBulletChattingList() {
       let currentTime = this.getCurrentPlaybackProgress();
-      let progress = -1;
-      if (this.bulletChattingList[this.bulletChattingIndex] != null) {
-        progress = this.bulletChattingList[this.bulletChattingIndex].progress;
-      }
-
-      console.log(currentTime + 'ts' + this.mainIntervalId);
-      console.log(progress);
+      let progress = this.getBulletChattingProgress();
       while (0 <= progress && currentTime >= progress) {
         //如果超时超过3秒，移除顶部
         if (currentTime - progress > 3) {
           this.bulletChattingIndex++;
-          progress = this.bulletChattingList[this.bulletChattingIndex].progress;
+          progress = this.getBulletChattingProgress();
           continue;
         }
         //查找是否有空的box用于显示
@@ -155,22 +173,110 @@ export default {
         }
         //存在空的box,显示
         if (i != 4) {
-          this.commentBox[i] = false;
+          this.commentBoxIndex[i] = this.bulletChattingIndex;
           this.bulletChattingIndex++;
-          progress = this.bulletChattingList[this.bulletChattingIndex].progress;
+          progress = this.getBulletChattingProgress();
           //显示box
+          this.showBulletChattingBox(i);
           //设定持续时间
-          console.log("ok" + i);
+          this.autoCloseBulletChattingBox(i);
+          console.log("ok" + i + "value" + this.commentBoxIndex[i]);
+        } else {
+          break;
         }
       }
     },
+    //暂停时关闭检查,停止计时器
+    closeLoopExecution() {
+      clearInterval(this.mainIntervalId);
+      for (let i = 0; i < 4; i++) {
+        if (this.commentBoxTimeout[i] >= 0) {
+          clearTimeout(this.commentBoxTimeout[i]);
+          this.commentBoxTimeout[i] = -2;
+        }
+      }
+    },
+    //重新定位后重设BulletChattingIndex，关闭所有已经显示的弹幕
+    resetBulletChattingIndex() {
+      this.closeAll();
+      let current = this.getCurrentPlaybackProgress();
+      let left = 0;
+      let right = this.bulletChattingList.length - 1;
+      while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (this.bulletChattingList[mid].progress - current >= 0) {
+          right = mid - 1;
+        } else {
+          left = mid + 1;
+        }
+      }
+      if (right == -1) {
+        right = 0;
+      }
+      this.bulletChattingIndex = right;
+    },
+    //显示评论详细信息:暂停视频，获取点击的box的id,发送获取详细信息请求,开启大框
+    showCommentDetail:function (index){
+      this.player.pause();
+      let bulletChattingListIndex =  this.commentBoxIndex[index];
+      let commentIndex = this.bulletChattingList[bulletChattingListIndex].commentId;
+      this.$refs.danmakuReply.getData(commentIndex);
+      document.getElementById("danmakuReplyBox").style.display="block";
+    },
+    closeCommentDetail:function (){
+      document.getElementById("danmakuReplyBox").style.display="none";
+      this.player.play();
+    },
+    //工具方法
+    //获取当前播放进度
     getCurrentPlaybackProgress() {
       let currentTime = this.player.currentTime.toFixed(0);
       return currentTime;
     },
-    closeLoopExecution() {
-      clearInterval(this.mainIntervalId);
+    //获取当前bulletChattingIndex下的bulletChattingList的progress，不存在为-1
+    getBulletChattingProgress() {
+      let progress = -1;
+      if (this.bulletChattingList[this.bulletChattingIndex] != null) {
+        progress = this.bulletChattingList[this.bulletChattingIndex].progress;
+      } else {
+        return progress = -1;
+      }
+      return progress - 0;
+    },
+    //显示某个danmaku-box
+    showBulletChattingBox(index) {
+      let elementId = "danmaku-box-";
+      let element = document.getElementById(elementId + index);
+      element.style.display = "block";
+      this.commentBox[index] = false;
+    },
+    //5秒后关闭danmaku-box
+    autoCloseBulletChattingBox(index) {
+      let elementId = "danmaku-box-";
+      let element = document.getElementById(elementId + index);
+      let commentBox = this.commentBox;
+      let timeout = this.commentBoxTimeout
+      let key = setTimeout(function () {
+        element.style.display = "none";
+        commentBox[index] = true;
+        timeout[index] = -1;
+      }, 5000);
+      timeout[index] = key;
+    },
+    //关闭所有已经显示的danmaku-box
+    closeAll() {
+      for (let i = 0; i < 5; i++) {
+        let elementId = "danmaku-box-";
+        let element = document.getElementById(elementId + i);
+        element.style.display = "none";
+        this.commentBox[i] = true;
+        this.commentBoxIndex[i] = 0;
+        this.commentBoxTimeout[i] = -1;
+      }
     }
+  },
+  components: {
+    DanmakuReply
   }
 }
 </script>
@@ -186,12 +292,14 @@ export default {
   width: 100%;
   height: 100%;
 }
-p{
+
+p {
   width: 100%;
   text-overflow: ellipsis;
-  white-space:nowrap;
-  overflow:hidden;
+  white-space: nowrap;
+  overflow: hidden;
 }
+
 .video-play-box {
   position: relative;
   width: 100%;
@@ -214,50 +322,20 @@ p{
 
 .danmaku-box {
   position: absolute;
-  width: 20%;
+  width: auto;
+  max-width: 20%;
   height: auto;
   padding: 2% 3%;
   background: black;
-  opacity: 0.5;
+  opacity: 0.3;
   text-align: left;
   color: #EBEEF5;
-  font-size: 18px;
-}
-
-.comment > ul {
-  padding: 0;
-  list-style: none;
-  text-align: left;
-}
-
-.comment > ul > li {
-  list-style: none;
-  margin-left: 5%;
-  margin-right: 5%;
-  word-break: keep-all;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: aliceblue;
-}
-
-.over {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 998;
-}
-
-.big {
-  position: absolute;
-  margin-left: 10%;
-  margin-top: 3%;
-  width: 80%;
-  height: 80%;
-  background: white;
+  font-size: 15px;
   z-index: 999;
+  border-radius: 5px;
   display: none;
 }
+
 
 .controller {
   position: relative;
