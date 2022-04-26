@@ -2,11 +2,12 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
-        <div id="danmakuReplyBox" style="position: absolute;width: 100%;height: 100%;z-index: 9999;background-color: #EBEEF5;display: none">
+        <div id="danmakuReplyBox" style="position: absolute;width: 100%;height: 100%;z-index: 9999;background-color: whitesmoke;display: block">
+          <DanmakuReply ref="danmakuReply"></DanmakuReply>
           <div style="position: absolute;width:5%;height: 0;padding-bottom:5%;top: 3%;right: 2%;">
             <el-button v-on:click="closeCommentDetail()" type="danger" icon="el-icon-close" circle style="position:absolute;width:100%;height: 100%;padding: 0"></el-button>
           </div>
-          <DanmakuReply ref="danmakuReply"></DanmakuReply>
+
         </div>
         <div v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%">
           <p>{{ bulletChattingList[commentBoxIndex[0]].content }}</p>

@@ -33,10 +33,10 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    },{
+    },/*{
       path: '/test',
-      name: 'Register',
-      component: Register
-    },
+      name: 'Replies',
+      component: Replies
+    },*/
   ]
 })
