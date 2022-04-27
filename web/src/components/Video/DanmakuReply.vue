@@ -63,7 +63,17 @@
         </li>
       </ul>
     </div>
+    <div style="position: relative;width: 100%;height: 15%;background-color: black;display: flex;align-items: center;text-align: center">
+      <div style="position: relative;width: 90%;height: 50%; left: 5%;background-color: #ebeef5">
+        <div style="width: 85%">
+          <el-input v-model="input" placeholder="请输入内容" style="font-size: 16px"></el-input>
+        </div>
+        <div>
+          <el-button type="primary" round>主要按钮</el-button>
+        </div>
 
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +84,7 @@ export default {
     return {
       commentData: {},
       circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      input:""
     }
   },
   methods: {
