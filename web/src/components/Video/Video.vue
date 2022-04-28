@@ -15,12 +15,12 @@
           <p style="font-size: 15px">Date</p>
         </div>
         <div class="avatar">
-          <el-avatar :size="50" :src="circleUrl"></el-avatar>
+          <el-avatar :size="50" :src="video.videoOwnerAvatar"></el-avatar>
           <p style="font-size: 15px;margin: 0;">Uploader</p></div>
       </div>
       <div class="video-box">
         <div class="video-play-box">
-          <VideoPlayArea></VideoPlayArea>
+          <VideoPlayArea v-bind:title="video"></VideoPlayArea>
         </div>
         <div class="recommend-video-box">
           <RecommendVideoList></RecommendVideoList>
@@ -52,7 +52,14 @@ export default {
   },
   data() {
     return {
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+      video:{
+        videoId:"456",
+        videoName:"AAA",
+        videoOwnerName:"aaa",
+        videoOwnerId:"01",
+        videoOwnerAvatar:"A",
+        videoUrl:"ASA"
+      }
     }
   }
 }

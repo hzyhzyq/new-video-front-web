@@ -2,14 +2,15 @@
   <div class="body">
     <div class="video-play-box">
       <div class="video" id="wrapper">
-        <div id="danmakuReplyBox" style="position: absolute;width: 100%;height: 100%;z-index: 9999;background-color: whitesmoke;display: block">
+        <div id="chartingBox" style="display: block">
+        <div id="danmakuReplyBox" style="position: absolute;width: 100%;height: 100%;z-index: 9999;background-color: whitesmoke;display: none">
           <DanmakuReply ref="danmakuReply"></DanmakuReply>
           <div style="position: absolute;width:5%;height: 0;padding-bottom:5%;top: 3%;right: 2%;">
             <el-button v-on:click="closeCommentDetail()" type="danger" icon="el-icon-close" circle style="position:absolute;width:100%;height: 100%;padding: 0"></el-button>
           </div>
 
         </div>
-        <div v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%">
+        <div v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%;">
           <p>{{ bulletChattingList[commentBoxIndex[0]].content }}</p>
           <p v-for="value in bulletChattingList[commentBoxIndex[0]].replay">>>{{ value.userName }}:&nbsp{{
               value.content
@@ -37,22 +38,23 @@
           <p>ababa</p>
         </div>
       </div>
+      </div>
     </div>
     <div class="controller">
       <div style="position:absolute;width: 15%;height:100%;left: 5%;padding-top: 10px">
-        <p class="demonstration">弹幕</p>
-        <el-switch style="top:8px" v-model="value"></el-switch>
+        <p class="demonstration">Charting</p>
+        <el-switch @change="closeCharting" style="top:8px" v-model="bulletChartingValue"></el-switch>
       </div>
       <div style="position:relative;width: 60%;height:100%;left: 20%;padding-top: 7px">
         <div class="block">
-          <span class="demonstration">弹幕不透明度</span>
-          <el-slider class="slider" v-model="slider" :step="10" show-stops></el-slider>
+          <span class="demonstration">ChartingOpacity</span>
+          <el-slider @input="changeOpacity" class="slider" v-model="slider" :min="10" :max="100" :step="10" show-stops></el-slider>
         </div>
       </div>
     </div>
     <div class="comment-box">
       <div style="float: left;width: auto;margin-left: 3%;height: 100%;padding-top:5px">
-        <el-button type="primary" round size="small">发送弹幕</el-button>
+        <el-button v-on:click="sendComment()" type="primary" round size="small">发送弹幕</el-button>
       </div>
       <div style="float: right;width: 75%;margin-right: 5%;">
         <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -71,7 +73,7 @@
     <div class="introduction-box">
       <h3>Describe</h3>
       <br>
-      <p>This is the video's describe</p>
+      <p>{{describe}}</p>
     </div>
   </div>
 </template>
@@ -83,6 +85,7 @@ import DanmakuReply from './DanmakuReply'
 
 export default {
   name: "VideoPlayArea",
+  props:["video"],
   data() {
     return {
       //video播放器
@@ -109,17 +112,21 @@ export default {
       //每个框的5秒倒计时id
       commentBoxTimeout: [-1, -1, -1, -1, -1],
       //
-      value: true,
+      bulletChartingValue: true,
       input: '',
       slider: 50,
+      describe:""
 
 
     }
   },
   created() {
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting").then((res) => {
-      console.log(res.data);
+    console.log(this.props.video.videoId)
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting?videoId="+this.videoId).then((res) => {
       this.bulletChattingList = res.data.bulletChattingList;
+    });
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/describe?videoId="+this.videoId).then((res) => {
+      this.describe = res.data.describe;
     });
   },
   mounted: function () {
@@ -181,7 +188,6 @@ export default {
           this.showBulletChattingBox(i);
           //设定持续时间
           this.autoCloseBulletChattingBox(i);
-          console.log("ok" + i + "value" + this.commentBoxIndex[i]);
         } else {
           break;
         }
@@ -221,7 +227,7 @@ export default {
       this.player.pause();
       let bulletChattingListIndex =  this.commentBoxIndex[index];
       let commentIndex = this.bulletChattingList[bulletChattingListIndex].commentId;
-      this.$refs.danmakuReply.getData(commentIndex);
+      this.$refs.danmakuReply.getData(commentIndex,1);
       document.getElementById("danmakuReplyBox").style.display="block";
     },
     closeCommentDetail:function (){
@@ -274,6 +280,25 @@ export default {
         this.commentBoxIndex[i] = 0;
         this.commentBoxTimeout[i] = -1;
       }
+    },
+    changeOpacity(val) {
+      let boxes =  document.getElementsByClassName("danmaku-box");
+      for (let i =0;i<boxes.length;i++){
+        boxes[i].style.opacity = val+"%";
+      }
+
+      console.log(`透明度: ${val}`);
+    },
+    closeCharting(val){
+      if(val){
+        document.getElementById("chartingBox").style.display="block";
+      }
+      else {
+        document.getElementById("chartingBox").style.display="none";
+      }
+    },
+    sendComment(){
+      this.input="";
     }
   },
   components: {
@@ -328,7 +353,7 @@ p {
   height: auto;
   padding: 2% 3%;
   background: black;
-  opacity: 0.3;
+  opacity: 50%;
   text-align: left;
   color: #EBEEF5;
   font-size: 15px;
@@ -357,7 +382,7 @@ p {
 }
 
 .demonstration {
-  font-size: 14px;
+  font-size: 12px;
   color: black;
   line-height: 14px;
 }
