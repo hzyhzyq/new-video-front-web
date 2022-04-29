@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; width: 1288px;height: 450px;">
+  <div style="position: relative; width: 1288px;height: 450px;">
     <el-row v-for="row in 2" :key="row">
       <el-col :span="10" style="height: auto; width: auto; margin: 10px" v-for="col in 4" :key="col">
         <el-card :body-style="{margin:'0px', padding: '0px',width:'300px',height:'200px'}" shadow="hover">
@@ -17,7 +17,19 @@
 
 <script>
 export default {
-  name: "VideoList"
+  //从主页中传入
+  videoType:"",
+  videos: [
+    {
+      videoId:"456",
+      videoName:"AAA",
+      videoOwnerName:"aaa",
+      videoOwnerId:"01",
+      videoOwnerAvatar:"A",
+      videoUrl:"ASA",
+      pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+    }
+  ]
 }
 </script>
 

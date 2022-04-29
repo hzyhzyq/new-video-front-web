@@ -77,7 +77,6 @@
         <div style="position:absolute; left:88%;top:5px;height:100%;width: 10%;text-align: center">
           <el-button v-on:click="sendReply()" type="primary" round style="height: 40px;width: 90%;font-size: 16px;padding: 0">Send</el-button>
         </div>
-
       </div>
     </div>
   </div>
@@ -123,19 +122,20 @@ export default {
     }
   },
   methods: {
+    //获取回复
     getData(commentId,page) {
       this.commentId = commentId;
       //url要改
       this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/get_reply?commentId="+commentId+"&page="+page).then((res) => {
-        console.log(res.data.commentData)
         this.commentData = res.data.commentData;
         this.total = this.commentData.total-0;
       });
     },
+    //换页
     handleCurrentChange(val) {
       this.getData(this.commentId,val);
-      console.log(`当前页: ${val}`);
     },
+    //发送回复
     sendReply(){
       //url要改
       /*this.$http.post().then((res) => {

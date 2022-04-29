@@ -85,7 +85,10 @@ import DanmakuReply from './DanmakuReply'
 
 export default {
   name: "VideoPlayArea",
+  //需要从video中获取值
+  //!!!
   props:["video"],
+  //
   data() {
     return {
       //video播放器
@@ -121,11 +124,12 @@ export default {
     }
   },
   created() {
-    console.log(this.props.video.videoId)
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting?videoId="+this.videoId).then((res) => {
+    //修改
+    //!!!
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting?videoId="+this.props.video.videoId).then((res) => {
       this.bulletChattingList = res.data.bulletChattingList;
     });
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/describe?videoId="+this.videoId).then((res) => {
+    this.$http.get("http://rap2api.taobao.org/app/mock/301574/describe?videoId="+this.props.video.videoId).then((res) => {
       this.describe = res.data.describe;
     });
   },
@@ -297,7 +301,13 @@ export default {
         document.getElementById("chartingBox").style.display="none";
       }
     },
+    //！！！
     sendComment(){
+      //使用post
+      this.$http.post().then((res) => {
+        this.describe = res.data.describe;
+      });
+      //发送一条弹幕
       this.input="";
     }
   },
