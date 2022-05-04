@@ -14,6 +14,7 @@ import axios from "axios";
 locale.use(lang);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
+axios.defaults.withCredentials=true;
 Vue.prototype.$http=axios;
 
 /* eslint-disable no-new */

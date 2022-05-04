@@ -1,8 +1,8 @@
 <template>
   <div>
     <My_Header></My_Header>
-    <div style="position: relative;min-width: 1288px;width: 100%;height: 100%;text-align: center">
-      <div style="display: inline-block">
+    <div style="position: relative;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;">
+      <div style="width: 1288px;height: 100%;">
       <VideoList></VideoList>
       </div>
     </div>

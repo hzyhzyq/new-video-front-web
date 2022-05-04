@@ -4,6 +4,7 @@ import Index from "../components/Index";
 import Video from "../components/Video/Video";
 import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
+import Upload from "../components/Upload";
 
 Vue.use(Router)
 
@@ -33,10 +34,10 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    },/*{
+    },{
       path: '/test',
-      name: 'Replies',
-      component: Replies
-    },*/
+      name: 'Upload',
+      component: Upload
+    },
   ]
 })

@@ -4,7 +4,7 @@
       <div class="form-box" id="form_box">
         <div class="register hidden" id="register_box">
           <div class="form">
-            <el-form ref="form" :model="registerForm" :rules="rules" label-width="80px" label-position="top"
+            <el-form ref="registerForm" :model="registerForm" :rules="rules" label-width="80px" label-position="top"
                      style="margin: auto">
               <el-form-item label="Username" prop="userName">
                 <el-input v-model="registerForm.userName" placeholder="Enter your user name"></el-input>
@@ -26,7 +26,7 @@
         </div>
         <div class="login " id="login_box">
           <div class="form">
-            <el-form ref="form" :model="loginForm" :rules="rules" label-width="80px" label-position="top"
+            <el-form ref="loginForm" :model="loginForm" :rules="rules" label-width="80px" label-position="top"
                      style="margin: auto">
               <el-form-item label="Username" prop="userName">
                 <el-input v-model="loginForm.userName" placeholder="Enter your user name"></el-input>
@@ -35,7 +35,7 @@
                 <el-input placeholder="Enter your user password" v-model="loginForm.password" show-password></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" style="width: 100%">Login</el-button>
+                <el-button type="primary" style="width: 100%" @click="login">Login</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -96,7 +96,23 @@ export default {
       formBox.style.transform = 'translateX(0%)';
       registerBox.classList.add('hidden');
       loginBox.classList.remove('hidden');
-    }
+    },
+    login(){
+      this.$http.post("http://localhost:8081/user/login",{},{params: {principal:this.loginForm.userName,password:this.loginForm.password,rememberMe:false}})
+        .then((res)=>{
+
+          if(res.data ==null || res.data.code!=200){
+            this.open();
+          }
+          else {
+            return this.$router.push('/home')
+          }
+
+      });
+    },
+    open() {
+      this.$message({showClose: true,type: 'error',message:'登录失败'});
+    },
   }
 }
 </script>

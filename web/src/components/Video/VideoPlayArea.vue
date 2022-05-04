@@ -8,30 +8,30 @@
           <div style="position: absolute;width:5%;height: 0;padding-bottom:5%;top: 3%;right: 2%;">
             <el-button v-on:click="closeCommentDetail()" type="danger" icon="el-icon-close" circle style="position:absolute;width:100%;height: 100%;padding: 0"></el-button>
           </div>
-
         </div>
         <div v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%;">
+          <p style="display: none"><{{bulletChattingIndex}}/p>
           <p>{{ bulletChattingList[commentBoxIndex[0]].content }}</p>
-          <p v-for="value in bulletChattingList[commentBoxIndex[0]].replay">>>{{ value.userName }}:&nbsp{{
-              value.content
+          <p v-for="value in bulletChattingList[commentBoxIndex[0]].reply">>>{{ value.userName }}:&nbsp{{
+              value.replyContent
             }}</p>
         </div>
         <div v-on:click="showCommentDetail(1)" class="danmaku-box" id="danmaku-box-1" style="top:5%;right: 10%">
           <p>{{ bulletChattingList[commentBoxIndex[1]].content }}</p>
-          <p v-for="value in bulletChattingList[commentBoxIndex[1]].replay">>>{{ value.userName }}:&nbsp{{
-              value.content
+          <p v-for="value in bulletChattingList[commentBoxIndex[1]].reply">>>{{ value.userName }}:&nbsp{{
+              value.replyContent
             }}</p>
         </div>
         <div v-on:click="showCommentDetail(2)" class="danmaku-box" id="danmaku-box-2" style="top:50%;left: 10%">
           <p>{{ bulletChattingList[commentBoxIndex[2]].content }}</p>
-          <p v-for="value in bulletChattingList[commentBoxIndex[2]].replay">>>{{ value.userName }}:&nbsp{{
-              value.content
+          <p v-for="value in bulletChattingList[commentBoxIndex[2]].reply">>>{{ value.userName }}:&nbsp{{
+              value.replyContent
             }}</p>
         </div>
         <div v-on:click="showCommentDetail(3)" class="danmaku-box" id="danmaku-box-3" style="top:50%;right: 10%">
           <p>{{ bulletChattingList[commentBoxIndex[3]].content }}</p>
-          <p v-for="value in bulletChattingList[commentBoxIndex[3]].replay">>>{{ value.userName }}:&nbsp{{
-              value.content
+          <p v-for="value in bulletChattingList[commentBoxIndex[3]].reply">>>{{ value.userName }}:&nbsp{{
+              value.replyContent
             }}</p>
         </div>
         <div v-on:click="showCommentDetail(4)" class="danmaku-box" id="danmaku-box-4" style="top:30%;left: 40%">
@@ -73,7 +73,7 @@
     <div class="introduction-box">
       <h3>Describe</h3>
       <br>
-      <p>{{describe}}</p>
+      <p>{{video.videoDescribe}}</p>
     </div>
   </div>
 </template>
@@ -85,25 +85,10 @@ import DanmakuReply from './DanmakuReply'
 
 export default {
   name: "VideoPlayArea",
-  //需要从video中获取值
-  //!!!
-  props:["video"],
+  props:{video:{},bulletChattingList:[],player: {},},
   //
   data() {
     return {
-      //video播放器
-      player: {},
-      //弹幕列表
-      bulletChattingList: [{
-        commentId: "",
-        progress: "0",
-        userName: "",
-        content: "",
-        replay: [{
-          userName: "",
-          content: ""
-        }]
-      }],
       //当前弹幕列表的位置
       bulletChattingIndex: 0,
       //主计时器
@@ -118,33 +103,13 @@ export default {
       bulletChartingValue: true,
       input: '',
       slider: 50,
-      describe:""
-
-
     }
   },
-  created() {
-    //修改
-    //!!!
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/video/bullet-chatting?videoId="+this.props.video.videoId).then((res) => {
-      this.bulletChattingList = res.data.bulletChattingList;
-    });
-    this.$http.get("http://rap2api.taobao.org/app/mock/301574/describe?videoId="+this.props.video.videoId).then((res) => {
-      this.describe = res.data.describe;
-    });
-  },
-  mounted: function () {
-    this.xc();
-    this.player = this.getPlayer();
-    this.player.addEventListener('playing', this.loopExecution);
-    this.player.addEventListener('pause', this.closeLoopExecution);
-    this.player.addEventListener('seeking', this.resetBulletChattingIndex)
-  },
   methods: {
-    xc() {
+    xc(videoUrl) {
       new Chimee({
         wrapper: document.getElementById("wrapper"),
-        src: 'http://192.168.211.130/vod/example.mp4/index.m3u8',
+        src: videoUrl,
         controls: true,
         isLive: false,
         autoplay: false,
@@ -158,11 +123,13 @@ export default {
     },
     //播放,重启计时器，每隔一秒检测是否打印弹幕
     loopExecution() {
+      //开始播放，重启计时器
       for (let i = 0; i < 4; i++) {
         if (this.commentBoxTimeout[i] == -2) {
           this.autoCloseBulletChattingBox(i)
         }
       }
+      //监测是否打印
       this.mainIntervalId = setInterval(this.checkNextBulletChattingList, 1000);
     },
     checkNextBulletChattingList() {
@@ -290,8 +257,6 @@ export default {
       for (let i =0;i<boxes.length;i++){
         boxes[i].style.opacity = val+"%";
       }
-
-      console.log(`透明度: ${val}`);
     },
     closeCharting(val){
       if(val){

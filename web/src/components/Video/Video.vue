@@ -5,22 +5,22 @@
       <div class="top-box">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item><a href="/" class="breadcrumb">Index</a></el-breadcrumb-item>
-          <el-breadcrumb-item><a href="/" class="breadcrumb">Type</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/" class="breadcrumb">{{this.$route.query.type}}</a></el-breadcrumb-item>
           <el-breadcrumb-item><a class="breadcrumb">VideoName</a></el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div class="title-box">
         <div class="title">
-          <p style="font-size: 35px;">VideoName</p>
-          <p style="font-size: 15px">Date</p>
+          <p style="font-size: 35px;">{{video.videoName}}</p>
+          <p style="font-size: 15px">{{video.createTime}}</p>
         </div>
         <div class="avatar">
           <el-avatar :size="50" :src="video.videoOwnerAvatar"></el-avatar>
-          <p style="font-size: 15px;margin: 0;">Uploader</p></div>
+          <p style="font-size: 15px;margin: 0;">{{video.videoOwnerName}}</p></div>
       </div>
       <div class="video-box">
         <div class="video-play-box">
-          <VideoPlayArea v-bind:title="video"></VideoPlayArea>
+          <VideoPlayArea ref="videoPlayArea" v-bind:video="video" v-bind:player="player" v-bind:bulletChattingList="bulletChattingList"></VideoPlayArea>
         </div>
         <div class="recommend-video-box">
           <RecommendVideoList></RecommendVideoList>
@@ -53,15 +53,53 @@ export default {
   data() {
     return {
       video:{
-        videoId:"456",
-        videoName:"AAA",
-        videoOwnerName:"aaa",
-        videoOwnerId:"01",
-        videoOwnerAvatar:"A",
-        videoUrl:"ASA",
-        pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-      }
+        id:"",
+        videoName:"",
+        videoOwnerName:"",
+        videoOwnerId:"",
+        videoOwnerAvatar:"",
+        videoDescribe:"",
+        createTime:"",
+        videoUrl:"",
+        pictureUrl: ""
+      },
+      bulletChattingList: [{
+        commentId: "0",
+        progress: "-1",
+        userName: "admin",
+        content: "test",
+        reply: [{
+          userName: "admin",
+          replyContent: "test"
+        }]
+      }],
+      player: {},
     }
+  },
+  mounted: function () {
+    //获取视频信息
+    this.$http.get("http://localhost:8081/video/get_video?videoId="+this.$route.query.id,{withCredentials: true,}).then((res) => {
+      if(res.data.code == 200){
+        this.video = res.data.data;
+        //播放视频
+        this.$refs.videoPlayArea.xc(this.video.videoUrl);
+        this.player = this.$refs.videoPlayArea.getPlayer();
+        //获取弹幕
+        this.$http.get("http://localhost:8081/comment/get_comment?videoId="+this.$route.query.id,{withCredentials: true,}).then((res) => {
+          if(res.data.code == 200){
+            this.bulletChattingList = res.data.data.bulletChattingList;
+            //打印弹幕
+            this.player.addEventListener('playing', this.$refs.videoPlayArea.loopExecution);
+            this.player.addEventListener('pause', this.$refs.videoPlayArea.closeLoopExecution);
+            this.player.addEventListener('seeking', this.$refs.videoPlayArea.resetBulletChattingIndex)
+          }
+        });
+
+      }
+      else {
+        //跳转
+      }
+    });
   }
 }
 </script>
