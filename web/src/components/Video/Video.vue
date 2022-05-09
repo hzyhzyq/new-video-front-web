@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Header></Header>
+    <Header v-bind:currentUser="currentUser"></Header>
     <div class="main">
       <div class="top-box">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item><a href="/" class="breadcrumb">Index</a></el-breadcrumb-item>
-          <el-breadcrumb-item><a href="/" class="breadcrumb">{{this.$route.query.type}}</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a :href="'/'+this.video.videoType" class="breadcrumb">{{this.$route.query.type}}</a></el-breadcrumb-item>
           <el-breadcrumb-item><a class="breadcrumb">VideoName</a></el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -20,7 +20,7 @@
       </div>
       <div class="video-box">
         <div class="video-play-box">
-          <VideoPlayArea ref="videoPlayArea" v-bind:video="video" v-bind:player="player" v-bind:bulletChattingList="bulletChattingList"></VideoPlayArea>
+          <VideoPlayArea ref="videoPlayArea" v-bind:currentUser="currentUser" v-bind:video="video" v-bind:player="player" v-bind:bulletChattingList="bulletChattingList"></VideoPlayArea>
         </div>
         <div class="recommend-video-box">
           <RecommendVideoList></RecommendVideoList>
@@ -58,6 +58,7 @@ export default {
         videoOwnerName:"",
         videoOwnerId:"",
         videoOwnerAvatar:"",
+        videoType:"",
         videoDescribe:"",
         createTime:"",
         videoUrl:"",
@@ -73,6 +74,7 @@ export default {
           replyContent: "test"
         }]
       }],
+      currentUser:{},
       player: {},
     }
   },
@@ -94,10 +96,14 @@ export default {
             this.player.addEventListener('seeking', this.$refs.videoPlayArea.resetBulletChattingIndex)
           }
         });
-
+        this.$http.get("http://localhost:8081/user/get_user_info",{withCredentials: true,}).then((res) => {
+          if(res.data.code == 200){
+            this.currentUser = res.data.data;
+          }
+        });
       }
       else {
-        //跳转
+        //跳转到404
       }
     });
   }

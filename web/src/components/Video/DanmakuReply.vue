@@ -102,7 +102,8 @@ export default {
       commentData: {},
       replies: [],
       total:"",
-      input: ""
+      input: "",
+      index:"1",
     }
   },
   methods: {
@@ -118,17 +119,35 @@ export default {
     },
     //换页
     handleCurrentChange(val) {
+      console.log("换页")
       this.getData(this.commentId, val);
+      this.index = val;
     },
     //发送回复
     sendReply() {
-      //url要改
-      /*this.$http.post().then((res) => {
-        //发送成功
-      });*/
+      this.$http.post("http://localhost:8081/reply/send_reply", {}, {
+        params: {
+          commentId: this.commentId,
+          replyContent:this.input
+        }
+      })
+        .then((res) => {
+          if (res.data == null || res.data.code != 200) {
+            this.$message.error("send fail");
+          } else {
+            this.$message({
+              message: "success",
+              type: 'success'
+            });
+            this.handleCurrentChange(this.index);
+          }
+        });
+      console.log(this.$parent);
+      this.$parent.sendReply(this.input);
       this.input = "";
+
     }
-  }
+  },
 }
 </script>
 

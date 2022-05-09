@@ -1,9 +1,34 @@
 <template>
   <div>
-    <My_Header></My_Header>
-    <div style="position: relative;width: 100%;height: 100%;display: flex;justify-content: center;align-items: center;">
-      <div style="width: 1288px;height: 100%;">
-      <VideoList></VideoList>
+    <My_Header v-bind:currentUser="currentUser"></My_Header>
+    <div style="position: relative;width: 100%;height: 500px;margin-bottom: 80px;margin-top: 30px;">
+      <div style="position: absolute;width: 1288px;height: 500px;left: 0px;right: 0px;margin: auto">
+        <el-carousel indicator-position="inside"  type="card" :interval="4000" height="500px">
+          <el-carousel-item v-for="item in 4" :key="item" >
+            <p>{{item}}</p>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+    </div>
+    <div class="main-box">
+      <div class="box">
+        <div class="title">News</div>
+        <div class="icon">More</div>
+      <VideoList v-bind:type="'news'"></VideoList>
+      </div>
+    </div>
+    <div class="main-box">
+      <div class="box">
+        <div class="title">Games</div>
+        <div class="icon">More</div>
+        <VideoList v-bind:type="'games'"></VideoList>
+      </div>
+    </div>
+    <div class="main-box">
+      <div class="box">
+        <div class="title">Movies</div>
+        <div class="icon">More</div>
+        <VideoList v-bind:type="'movies'"></VideoList>
       </div>
     </div>
     <MY_Footer></MY_Footer>
@@ -19,7 +44,15 @@ export default {
   name: "Index",
   data() {
     return {
+      currentUser:{},
     }
+  },
+  mounted: function () {
+    this.$http.get("http://localhost:8081/user/get_user_info",{withCredentials: true,}).then((res) => {
+      if(res.data.code == 200){
+        this.currentUser = res.data.data;
+      }
+    });
   },
   methods: {},
   components: {
@@ -31,5 +64,27 @@ export default {
 </script>
 
 <style scoped>
+.main-box{
+  position: relative;width: 100%;height: 750px;margin-bottom: 80px;
+}
+.box{
+  position:absolute; left:0px; right:0px; margin:auto;min-width: 1288px;width:1288px;height: 100%;
+}
+.icon{
+  position: absolute;right:0;top:20px;width:80px;height:38px;margin: 20px;border: #EBEEF5 1px solid;border-radius: 5px;text-align: center;line-height: 36px
+}
+.icon:hover{
+  background:#f7f7f7;
+}
+.title{
+  position: relative;top:20px;font-size: 30px;font-weight:bold; margin: 20px
+}
+/**/
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
 
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
 </style>

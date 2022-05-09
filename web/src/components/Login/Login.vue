@@ -100,14 +100,12 @@ export default {
     login(){
       this.$http.post("http://localhost:8081/user/login",{},{params: {principal:this.loginForm.userName,password:this.loginForm.password,rememberMe:false}})
         .then((res)=>{
-
           if(res.data ==null || res.data.code!=200){
             this.open();
           }
           else {
             return this.$router.push('/home')
           }
-
       });
     },
     open() {

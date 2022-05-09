@@ -4,7 +4,7 @@ import Index from "../components/Index";
 import Video from "../components/Video/Video";
 import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
-import Upload from "../components/Upload";
+import Upload from "../components/User/Upload";
 
 Vue.use(Router)
 

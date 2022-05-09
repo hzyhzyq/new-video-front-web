@@ -2,11 +2,11 @@
   <div style="position: relative;min-height: 450px;">
     <div v-for="item in videos" :key="item.id" class="card-style">
       <el-card shadow="hover" v-on:click.native="toVideoDetail(item)">
-        <el-image :src="'http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
+        <el-image :src=item.pictureUrl
                   style="height: 80%; width: 100%">
         </el-image>
         <div style="padding: 5px;">
-          <span>好吃的汉堡</span>
+          <span>{{item.videoName}}</span>
         </div>
       </el-card>
     </div>
@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  props: {type:''},
   //从主页中传入
   data() {
     return {
@@ -26,116 +27,32 @@ export default {
         cursor: 'pointer',
         display: 'inline-block',
       },
-      videoType: "",
       videos: [
         {
-          videoId: "1",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "2",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "3",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "4",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "5",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "6",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "7",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "8",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "9",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "10",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-        },
-        {
-          videoId: "11",
-          videoName: "AAA",
-          videoOwnerName: "aaa",
-          videoOwnerId: "01",
-          videoOwnerAvatar: "A",
-          videoUrl: "ASA",
-          pictureUrl: "http://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+          videoId: "",
+          videoName: "",
+          videoOwnerName: "",
+          videoOwnerId: "",
+          videoOwnerAvatar: "",
+          videoUrl: "",
+          pictureUrl: ""
         }
       ],
     }
   },
   methods: {
     toVideoDetail(data) {
-      console.log(1231, data)
-      this.$router.push(`/video?type=news&id=${data.videoId}`)
+      console.log(data);
+      this.$router.push("/video?type="+this.type+"&id="+data.id)
     }
-  }
+  },
+  mounted: function () {
+    this.$http.get("http://localhost:8081/video/get_recommend_video?type="+this.type,{withCredentials: true,}).then((res) => {
+      if(res.data.code == 200){
+        this.videos = res.data.data;
+      }
+    });
+  },
 }
 </script>
 

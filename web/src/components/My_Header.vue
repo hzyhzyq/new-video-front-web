@@ -18,8 +18,10 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#fff">
-          <el-menu-item index="1"><a href="/login">Login</a></el-menu-item>
-          <el-menu-item index="2"><a href="/register">Register</a></el-menu-item>
+
+          <el-menu-item index="1" v-if="currentUser.id == null"><a href="/login">Login</a></el-menu-item>
+          <el-menu-item index="2" v-if="currentUser.id == null"><a href="/register">Register</a></el-menu-item>
+          <el-menu-item index="3" v-if="currentUser.id != null"><a href="/user">{{currentUser.loginName}}</a></el-menu-item>
         </el-menu>
       </div>
     </div>
@@ -28,7 +30,8 @@
 
 <script>
 export default {
-  name: "my_header"
+  name: "my_header",
+  props:{currentUser: {},},
 }
 </script>
 
