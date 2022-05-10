@@ -5,6 +5,9 @@ import Video from "../components/Video/Video";
 import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
 import Upload from "../components/User/Upload";
+import Detail from "../components/Detail";
+import Test from "../components/User/Upload";
+
 
 Vue.use(Router)
 
@@ -38,6 +41,15 @@ export default new Router({
       path: '/test',
       name: 'Upload',
       component: Upload
+    },{
+      path: '/detail',
+      name: 'Detail',
+      component: Detail
+    },{
+      path: '/test',
+      name: 'Test',
+      component: Test
+
     },
   ]
 })

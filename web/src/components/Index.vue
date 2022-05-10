@@ -77,7 +77,7 @@ export default {
   background:#f7f7f7;
 }
 .title{
-  position: relative;top:20px;font-size: 30px;font-weight:bold; margin: 20px
+  position: relative;top:20px;font-size: 30px;font-weight:bold; margin: 20px 20px 30px
 }
 /**/
 .el-carousel__item:nth-child(2n) {

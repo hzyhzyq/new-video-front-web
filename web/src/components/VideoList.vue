@@ -1,12 +1,13 @@
 <template>
-  <div style="position: relative;min-height: 450px;">
+  <div style="position: relative;">
     <div v-for="item in videos" :key="item.id" class="card-style">
       <el-card shadow="hover" v-on:click.native="toVideoDetail(item)">
-        <el-image :src=item.pictureUrl
-                  style="height: 80%; width: 100%">
+        <el-image style="height: 150px; width: 100%"
+                  :src=item.pictureUrl
+                  :fit="cover">
         </el-image>
         <div style="padding: 5px;">
-          <span>{{item.videoName}}</span>
+          <span>{{ item.videoName }}</span>
         </div>
       </el-card>
     </div>
@@ -15,7 +16,7 @@
 
 <script>
 export default {
-  props: {type:''},
+  props: {type: ''},
   //从主页中传入
   data() {
     return {
@@ -43,12 +44,12 @@ export default {
   methods: {
     toVideoDetail(data) {
       console.log(data);
-      this.$router.push("/video?type="+this.type+"&id="+data.id)
+      this.$router.push("/video?type=" + this.type + "&id=" + data.id)
     }
   },
   mounted: function () {
-    this.$http.get("http://localhost:8081/video/get_recommend_video?type="+this.type,{withCredentials: true,}).then((res) => {
-      if(res.data.code == 200){
+    this.$http.get("http://localhost:8081/video/get_recommend_video?type=" + this.type, {withCredentials: true,}).then((res) => {
+      if (res.data.code == 200) {
         this.videos = res.data.data;
       }
     });
@@ -57,12 +58,12 @@ export default {
 </script>
 
 <style scoped>
-  .card-style {
-    margin: 10px;
-    padding: 0;
-    width: 300px;
-    height: 200px;
-    cursor: pointer;
-    display: inline-block;
-  }
+.card-style {
+  margin: 10px;
+  padding: 0;
+  width: 300px;
+  height: 230px;
+  cursor: pointer;
+  display: inline-block;
+}
 </style>
