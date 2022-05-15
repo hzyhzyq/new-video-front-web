@@ -4,7 +4,7 @@ import Index from "../components/Index";
 import Video from "../components/Video/Video";
 import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
-import Upload from "../components/User/Upload";
+import User from "../components/User/User";
 import Detail from "../components/Detail";
 
 
@@ -37,9 +37,9 @@ export default new Router({
       name: 'Register',
       component: Register
     },{
-      path: '/upload',
-      name: 'Upload',
-      component: Upload
+      path: '/user',
+      name: 'User',
+      component: User
     },{
       path: '/detail',
       name: 'Detail',
