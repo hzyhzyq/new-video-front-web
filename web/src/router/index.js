@@ -6,7 +6,6 @@ import Login from "../components/Login/Login";
 import Register from "../components/Login/Register";
 import Upload from "../components/User/Upload";
 import Detail from "../components/Detail";
-import Test from "../components/User/Upload";
 
 
 Vue.use(Router)
@@ -38,18 +37,13 @@ export default new Router({
       name: 'Register',
       component: Register
     },{
-      path: '/test',
+      path: '/upload',
       name: 'Upload',
       component: Upload
     },{
       path: '/detail',
       name: 'Detail',
       component: Detail
-    },{
-      path: '/test',
-      name: 'Test',
-      component: Test
-
-    },
+    }
   ]
 })

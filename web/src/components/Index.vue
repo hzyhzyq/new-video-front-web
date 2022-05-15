@@ -4,8 +4,9 @@
     <div style="position: relative;width: 100%;height: 500px;margin-bottom: 80px;margin-top: 30px;">
       <div style="position: absolute;width: 1288px;height: 500px;left: 0px;right: 0px;margin: auto">
         <el-carousel indicator-position="inside"  type="card" :interval="4000" height="500px">
-          <el-carousel-item v-for="item in 4" :key="item" >
-            <p>{{item}}</p>
+          <el-carousel-item v-for="item in videos" :key="item.id" v-on:click.native="toVideoDetail(item)">
+            <el-image style="width: 100%;height: 100%;" :src=item.pictureUrl fit='cover'></el-image>
+            <p>{{item.id}}</p>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       currentUser:{},
+      videos: [],
     }
   },
   mounted: function () {
@@ -53,8 +55,18 @@ export default {
         this.currentUser = res.data.data;
       }
     });
+    this.$http.get("http://localhost:8081/video/get_recommend_video", {withCredentials: true,}).then((res) => {
+      if (res.data.code == 200) {
+        this.videos = res.data.data;
+      }
+    });
   },
-  methods: {},
+  methods: {
+    toVideoDetail(data) {
+      console.log(data);
+      this.$router.push("/video?type=" + data.videoType + "&id=" + data.id)
+    }
+  },
   components: {
     My_Header,
     MY_Footer,

@@ -20,24 +20,24 @@
         style="width: 100%;height: 100%;background-color: #ebeef5;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px">
         <li style="position:relative;width: 100%;height: 25%;background-color: #ebeef5">
           <div v-if="replies[0] != null">
-          <div style="position: absolute;left: 5%;width: 7%;height: 80%;top:10%">
-            <el-avatar style="width: 60%;height: 60%;margin-left: 20%"
-                       :src="replies[0].replyUserAvatar"></el-avatar>
-            <div
-              style="position: absolute;width:100%;width:150%;left:-25%;height: 35%;top:65%;display: flex;align-items: center;text-align: center">
-              <p style="font-size: 14px">{{ replies[0].userName }}</p>
+            <div style="position: absolute;left: 5%;width: 7%;height: 80%;top:10%">
+              <el-avatar style="width: 60%;height: 60%;margin-left: 20%"
+                         :src="replies[0].userAvatar"></el-avatar>
+              <div
+                style="position: absolute;width:100%;width:150%;left:-25%;height: 35%;top:65%;display: flex;align-items: center;text-align: center">
+                <p style="font-size: 14px">{{ replies[0].userName }}</p>
+              </div>
             </div>
-          </div>
-          <div style="position: absolute;left: 20%;width:80%;height: 100%;display: flex;align-items: center;">
-            <p>{{ replies[0].replyContent }}</p>
-          </div>
+            <div style="position: absolute;left: 20%;width:80%;height: 100%;display: flex;align-items: center;">
+              <p>{{ replies[0].replyContent }}</p>
+            </div>
           </div>
         </li>
         <li style="position:relative;width: 100%;height: 25%;background-color: rgba(194,198,206,1)">
           <div v-if="replies[1] != null">
             <div style="position: absolute;left: 5%;width: 7%;height: 80%;top:10%">
               <el-avatar style="width: 60%;height: 60%;margin-left: 20%"
-                         :src="replies[1].replyUserAvatar"></el-avatar>
+                         :src="replies[1].userAvatar"></el-avatar>
               <div
                 style="position: absolute;width:100%;width:150%;left:-25%;height: 35%;top:65%;display: flex;align-items: center;text-align: center">
                 <p style="font-size: 14px">{{ replies[1].userName }}</p>
@@ -52,7 +52,7 @@
           <div v-if="replies[2] != null">
             <div style="position: absolute;left: 5%;width: 7%;height: 80%;top:10%">
               <el-avatar style="width: 60%;height: 60%;margin-left: 20%"
-                         :src="replies[2].replyUserAvatar "></el-avatar>
+                         :src="replies[2].userAvatar "></el-avatar>
               <div
                 style="position: absolute;width:150%;left:-25%;height: 35%;top:65%;display: flex;align-items: center;text-align: center">
                 <p style="font-size: 14px">{{ replies[2].userName }}</p>
@@ -101,9 +101,9 @@ export default {
       commentId: "",
       commentData: {},
       replies: [],
-      total:"",
+      total: "",
       input: "",
-      index:"1",
+      index: "1",
     }
   },
   methods: {
@@ -128,7 +128,7 @@ export default {
       this.$http.post("http://localhost:8081/reply/send_reply", {}, {
         params: {
           commentId: this.commentId,
-          replyContent:this.input
+          replyContent: this.input
         }
       })
         .then((res) => {

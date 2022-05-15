@@ -6,7 +6,7 @@
         <el-breadcrumb separator="/">
           <el-breadcrumb-item><a href="/" class="breadcrumb">Index</a></el-breadcrumb-item>
           <el-breadcrumb-item><a :href="'/'+this.video.videoType" class="breadcrumb">{{this.$route.query.type}}</a></el-breadcrumb-item>
-          <el-breadcrumb-item><a class="breadcrumb">VideoName</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a class="breadcrumb">{{video.videoName}}</a></el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div class="title-box">

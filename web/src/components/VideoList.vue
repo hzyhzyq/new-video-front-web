@@ -4,7 +4,7 @@
       <el-card shadow="hover" v-on:click.native="toVideoDetail(item)">
         <el-image style="height: 150px; width: 100%"
                   :src=item.pictureUrl
-                  :fit="cover">
+                  fit="cover">
         </el-image>
         <div style="padding: 5px;">
           <span>{{ item.videoName }}</span>
@@ -28,17 +28,7 @@ export default {
         cursor: 'pointer',
         display: 'inline-block',
       },
-      videos: [
-        {
-          videoId: "",
-          videoName: "",
-          videoOwnerName: "",
-          videoOwnerId: "",
-          videoOwnerAvatar: "",
-          videoUrl: "",
-          pictureUrl: ""
-        }
-      ],
+      videos: [],
     }
   },
   methods: {
