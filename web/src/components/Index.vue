@@ -1,7 +1,7 @@
 <template>
   <div>
     <My_Header v-bind:currentUser="currentUser"></My_Header>
-    <div style="position: relative;width: 100%;height: 500px;margin-bottom: 80px;margin-top: 30px;">
+    <div style="position: relative;width: 100%;height: 500px;margin-bottom: 60px;margin-top: 80px;">
       <div style="position: absolute;width: 1288px;height: 500px;left: 0px;right: 0px;margin: auto">
         <el-carousel indicator-position="inside"  type="card" :interval="4000" height="500px">
           <el-carousel-item v-for="item in videos" :key="item.id" v-on:click.native="toVideoDetail(item)">
@@ -77,7 +77,7 @@ export default {
 
 <style scoped>
 .main-box{
-  position: relative;width: 100%;height: 750px;margin-bottom: 80px;
+  position: relative;width: 100%;height: 600px;margin-bottom: 30px;
 }
 .box{
   position:absolute; left:0px; right:0px; margin:auto;min-width: 1288px;width:1288px;height: 100%;
@@ -90,13 +90,5 @@ export default {
 }
 .title{
   position: relative;top:20px;font-size: 30px;font-weight:bold; margin: 20px 20px 30px
-}
-/**/
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
 }
 </style>
