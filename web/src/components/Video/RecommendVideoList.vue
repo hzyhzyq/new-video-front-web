@@ -3,8 +3,8 @@
     <div style="position: relative; width: 100%; height:100%;">
       <h1>RecommendVideo</h1>
       <ul>
-        <li v-for="row in recommendVideos" :key="row" style="margin-bottom:10% ">
-          <el-card :body-style="{ padding: '0', width:'100%' }" shadow="hover">
+        <li v-for="row in recommendVideos" :key="row" style="margin-bottom:10%" >
+          <el-card :body-style="{ padding: '0', width:'100%' }" shadow="hover" v-on:click.native="toVideoDetail(row)">
             <div style="position: relative; width: 50%;height: 0;padding-bottom: 30%;display: inline-block">
               <el-image
                 :src= row.pictureUrl
@@ -35,7 +35,14 @@ export default {
         console.log(this.recommendVideos)
       }
     });
-  }
+  },
+  methods: {
+    toVideoDetail(data) {
+      console.log(data);
+      this.$router.push("/video?type=" + data.videoType + "&id=" + data.id)
+      location.reload();
+    }
+  },
 }
 </script>
 

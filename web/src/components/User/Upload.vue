@@ -20,7 +20,7 @@
       <el-input
         type="textarea"
         :rows="5"
-        placeholder="请输入内容"
+        placeholder="ENTER VIDEO DESCRIBE"
         resize="none"
         v-model="textarea">
       </el-input>

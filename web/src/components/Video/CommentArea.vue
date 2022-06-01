@@ -1,6 +1,12 @@
 <template>
   <div style="position: relative; width: 100%;height: auto;min-width: 597px">
     <div style="position: relative;width: 100%;height: 945px;top:-60px;">
+      <div v-if="comment.length == 0">
+        <div style="position: absolute; width: 100%; height: 900px;top:50px;border-radius: 5px;border: #EBEEF5 solid 1px;"></div>
+        <div style="position: absolute; font-size: 30px;top:300px;left: 500px;color: #303133">No Comment yet</div>
+        <div style="position: absolute; font-size: 30px;top:500px;left: 450px;color: #303133">Enter Your Comment Now</div>
+      </div>
+
       <el-row style="height: auto;border-radius:5px;border: #EBEEF5 solid 1px;margin-top: 20px;margin-bottom: 20px"
               v-for="row in comment" :key="row">
         <el-col :span="4">
@@ -16,7 +22,7 @@
           <div class="grid-content" style="height: auto;">
             <div
               style="position: relative; width: 90%; min-height:130px;height:auto;left: 5%;text-align: left;display: flex;">
-              <p>{{row.content}}</p></div>
+              <p>{{ row.content }}</p></div>
           </div>
         </el-col>
       </el-row>
@@ -42,9 +48,9 @@ export default {
   data() {
     return {
       page: 1,
-      total:0,
-      id:"",
-      comment:[]
+      total: 0,
+      id: "",
+      comment: []
     }
   },
   mounted: function () {
@@ -87,7 +93,6 @@ p {
   margin-top: auto;
   margin-bottom: auto;
 }
-
 
 
 .grid-content {

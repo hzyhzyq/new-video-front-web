@@ -14,21 +14,21 @@
     <div class="main-box">
       <div class="box">
         <div class="title">News</div>
-        <div class="icon">More</div>
+        <div class="icon" v-on:click="toDetail('news')">More</div>
       <VideoList v-bind:type="'news'"></VideoList>
       </div>
     </div>
     <div class="main-box">
       <div class="box">
         <div class="title">Games</div>
-        <div class="icon">More</div>
+        <div class="icon" v-on:click="toDetail('games')">More</div>
         <VideoList v-bind:type="'games'"></VideoList>
       </div>
     </div>
     <div class="main-box">
       <div class="box">
         <div class="title">Movies</div>
-        <div class="icon">More</div>
+        <div class="icon" v-on:click="toDetail('movies')">More</div>
         <VideoList v-bind:type="'movies'"></VideoList>
       </div>
     </div>
@@ -65,6 +65,10 @@ export default {
     toVideoDetail(data) {
       console.log(data);
       this.$router.push("/video?type=" + data.videoType + "&id=" + data.id)
+    },
+    toDetail(data) {
+      console.log(data);
+      this.$router.push("/detail?id=" + data)
     }
   },
   components: {

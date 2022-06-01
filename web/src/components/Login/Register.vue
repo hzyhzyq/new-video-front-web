@@ -45,15 +45,15 @@
         </div>
       </div>
       <div class="message-box left">
-        <h2>去登录</h2>
+        <h2>GO TO LOGIN</h2>
         <h2>
-          <el-button type="primary" @click="gotoLogin">去登录</el-button>
+          <el-button type="primary" @click="gotoLogin">LOGIN</el-button>
         </h2>
       </div>
       <div class="message-box right">
-        <h2>去注册</h2>
+        <h2>GO TO REGISTER</h2>
         <h2>
-          <el-button type="primary" @click="gotoRegister">去注册</el-button>
+          <el-button type="primary" @click="gotoRegister">REGISTER</el-button>
         </h2>
       </div>
     </div>
@@ -69,20 +69,20 @@ export default {
       registerForm: {userName: '', nickName: '', password: '', email: ''},
       rules: {
         userName: [
-          {required: true, message: '请输入用户名', trigger: 'blur'},
-          {min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur'}
+          {required: true, message: 'enter username', trigger: 'blur'},
+          {min: 3, max: 15, message: '3 to 15 characters in length', trigger: 'blur'}
         ],
         nickName: [
-          {required: true, message: '请输入用户名', trigger: 'blur'},
-          {min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur'}
+          {required: true, message: 'enter nickName', trigger: 'blur'},
+          {min: 3, max: 15, message: '3 to 15 characters in length', trigger: 'blur'}
         ],
         password: [
-          {required: true, message: '请输入密码', trigger: 'blur'},
-          {min: 8, max: 15, message: '长度在 8 到 15 个字符', trigger: 'blur'}
+          {required: true, message: 'enter password', trigger: 'blur'},
+          {min: 8, max: 15, message: '8 to 15 characters in length\'', trigger: 'blur'}
         ],
         email: [
-          {required: true, message: '请输入邮箱地址', trigger: 'blur'},
-          {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
+          {required: true, message: 'enter email address', trigger: 'blur'},
+          {type: 'email', message: 'Please enter the correct email address', trigger: ['blur', 'change']}
         ]
       }
     }
