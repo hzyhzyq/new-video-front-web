@@ -11,30 +11,50 @@
                          style="position:absolute;width:100%;height: 100%;padding: 0"></el-button>
             </div>
           </div>
-          <div v-if="bulletChattingList[commentBoxIndex[0]] != null" v-on:click="showCommentDetail(0)" class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%;">
+          <div v-if="bulletChattingList[commentBoxIndex[0]] != null" v-on:click="showCommentDetail(0)"
+               class="danmaku-box" id="danmaku-box-0" style="top:5%;left: 10%;">
             <p style="display: none"><{{ bulletChattingIndex }}/p>
-            <p>{{ bulletChattingList[commentBoxIndex[0]].userName }}:&nbsp{{ bulletChattingList[commentBoxIndex[0]].content }}</p>
-            <p v-for="value in bulletChattingList[commentBoxIndex[0]].reply">>>{{ value.userName }}:&nbsp{{value.replyContent }}</p>
-            <p id = "reply-0" style="color: red;margin: 0;"></p>
+            <p>{{
+                bulletChattingList[commentBoxIndex[0]].userName
+              }}:&nbsp{{ bulletChattingList[commentBoxIndex[0]].content }}</p>
+            <p v-for="value in bulletChattingList[commentBoxIndex[0]].reply">>>{{
+                value.userName
+              }}:&nbsp{{ value.replyContent }}</p>
+            <p id="reply-0" style="color: red;margin: 0;"></p>
           </div>
-          <div v-if="bulletChattingList[commentBoxIndex[1]] != null" v-on:click="showCommentDetail(1)" class="danmaku-box" id="danmaku-box-1" style="top:5%;right: 10%">
-            <p>{{ bulletChattingList[commentBoxIndex[1]].userName }}:&nbsp{{ bulletChattingList[commentBoxIndex[1]].content }}</p>
-            <p v-for="value in bulletChattingList[commentBoxIndex[1]].reply">>>{{ value.userName }}:&nbsp{{value.replyContent }}</p>
-            <p id = "reply-1" style="color: red;margin: 0;"></p>
+          <div v-if="bulletChattingList[commentBoxIndex[1]] != null" v-on:click="showCommentDetail(1)"
+               class="danmaku-box" id="danmaku-box-1" style="top:5%;right: 10%">
+            <p>{{
+                bulletChattingList[commentBoxIndex[1]].userName
+              }}:&nbsp{{ bulletChattingList[commentBoxIndex[1]].content }}</p>
+            <p v-for="value in bulletChattingList[commentBoxIndex[1]].reply">>>{{
+                value.userName
+              }}:&nbsp{{ value.replyContent }}</p>
+            <p id="reply-1" style="color: red;margin: 0;"></p>
           </div>
-          <div v-if="bulletChattingList[commentBoxIndex[2]] != null" v-on:click="showCommentDetail(2)" class="danmaku-box" id="danmaku-box-2" style="top:50%;left: 10%">
-            <p>{{ bulletChattingList[commentBoxIndex[2]].userName }}:&nbsp{{ bulletChattingList[commentBoxIndex[2]].content }}</p>
-            <p v-for="value in bulletChattingList[commentBoxIndex[2]].reply">>>{{ value.userName }}:&nbsp{{value.replyContent }}</p>
-            <p id = "reply-2" style="color: red;margin: 0;"></p>
+          <div v-if="bulletChattingList[commentBoxIndex[2]] != null" v-on:click="showCommentDetail(2)"
+               class="danmaku-box" id="danmaku-box-2" style="top:50%;left: 10%">
+            <p>{{
+                bulletChattingList[commentBoxIndex[2]].userName
+              }}:&nbsp{{ bulletChattingList[commentBoxIndex[2]].content }}</p>
+            <p v-for="value in bulletChattingList[commentBoxIndex[2]].reply">>>{{
+                value.userName
+              }}:&nbsp{{ value.replyContent }}</p>
+            <p id="reply-2" style="color: red;margin: 0;"></p>
           </div>
-          <div v-if="bulletChattingList[commentBoxIndex[3]] != null" v-on:click="showCommentDetail(3)" class="danmaku-box" id="danmaku-box-3" style="top:50%;right: 10%">
-            <p>{{ bulletChattingList[commentBoxIndex[3]].userName }}:&nbsp{{ bulletChattingList[commentBoxIndex[3]].content }}</p>
-            <p v-for="value in bulletChattingList[commentBoxIndex[3]].reply">>>{{ value.userName }}:&nbsp{{value.replyContent }}</p>
-            <p id = "reply-3" style="color: red;margin: 0;"></p>
+          <div v-if="bulletChattingList[commentBoxIndex[3]] != null" v-on:click="showCommentDetail(3)"
+               class="danmaku-box" id="danmaku-box-3" style="top:50%;right: 10%">
+            <p>{{
+                bulletChattingList[commentBoxIndex[3]].userName
+              }}:&nbsp{{ bulletChattingList[commentBoxIndex[3]].content }}</p>
+            <p v-for="value in bulletChattingList[commentBoxIndex[3]].reply">>>{{
+                value.userName
+              }}:&nbsp{{ value.replyContent }}</p>
+            <p id="reply-3" style="color: red;margin: 0;"></p>
           </div>
           <div v-on:click="showCommentDetail(4)" class="danmaku-box" id="danmaku-box-4" style="top:30%;left: 40%">
             <p id="current-user-comment" style="color: red;margin: 0;"></p>
-            <p id = "reply-4" style="color: red;margin: 0;"></p>
+            <p id="reply-4" style="color: red;margin: 0;"></p>
           </div>
         </div>
       </div>
@@ -54,10 +74,10 @@
     </div>
     <div class="comment-box" v-if="currentUser.id != null">
       <div style="float: left;width: auto;margin-left: 3%;height: 100%;padding-top:5px">
-        <el-button v-on:click="sendComment()" type="primary" round size="small">发送弹幕</el-button>
+        <el-button v-on:click="sendComment()" type="primary" round size="small">send comment</el-button>
       </div>
       <div style="float: right;width: 75%;margin-right: 5%;">
-        <el-input v-model="input" placeholder="请输入内容" @click.native="pauseVideo()"></el-input>
+        <el-input v-model="input" placeholder="enter content" @click.native="pauseVideo()"></el-input>
       </div>
     </div>
     <div class="like-box" v-if="currentUser.id != null">
@@ -74,6 +94,23 @@
       <h3>Describe</h3>
       <br>
       <p>{{ video.videoDescribe }}</p>
+    </div>
+    <div class="comment-box-bottom" v-if="currentUser.id != null">
+      <h3 style="font-size: 19px;">Comment</h3>
+      <div style="position: relative;margin-top:15px;width: 85%;height: auto;">
+        <el-input
+          type="textarea"
+          :rows="3"
+          placeholder="Enter your comment"
+          resize="none"
+          maxlength="256"
+          :show-word-limit="true"
+          v-model="textarea">
+        </el-input>
+      </div>
+      <div style="position: absolute;right: 5%;top:55px;width: 50px;height: 50px;">
+        <el-button type="primary" icon="el-icon-check" circle style="width: 50px;height: 50px" v-on:click="sendOtherComment()"></el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -102,11 +139,12 @@ export default {
       //新发送的弹幕的id
       newCommentId: "",
       //正在发送回复的评论
-      inReply:-1,
+      inReply: -1,
       //
       bulletChartingValue: true,
       input: '',
       slider: 50,
+      textarea: ''
     }
   },
   methods: {
@@ -172,7 +210,7 @@ export default {
     closeLoopExecution() {
       clearInterval(this.mainIntervalId);
       for (let i = 0; i < 5; i++) {
-        console.log(i+"停止计时器"+this.commentBoxTimeout[i])
+        console.log(i + "停止计时器" + this.commentBoxTimeout[i])
         if (this.commentBoxTimeout[i] >= 0) {
           clearTimeout(this.commentBoxTimeout[i]);
           this.commentBoxTimeout[i] = -2;
@@ -201,7 +239,7 @@ export default {
     //显示评论详细信息:暂停视频，获取点击的box的id,发送获取详细信息请求,开启大框
     showCommentDetail: function (index) {
       console.log(this.currentUser)
-      if(this.currentUser.id == null){
+      if (this.currentUser.id == null) {
         console.log("未登录");
         return;
       }
@@ -246,7 +284,7 @@ export default {
     },
     //5秒后关闭danmaku-box
     autoCloseBulletChattingBox(index) {
-      console.log("自动关闭"+index)
+      console.log("自动关闭" + index)
       let elementId = "danmaku-box-";
       let element = document.getElementById(elementId + index);
       let reply = document.getElementById("reply-" + index);
@@ -254,7 +292,7 @@ export default {
       let timeout = this.commentBoxTimeout
       let key = setTimeout(function () {
         element.style.display = "none";
-        reply.innerHTML="";
+        reply.innerHTML = "";
         commentBox[index] = true;
         timeout[index] = -1;
       }, 5000);
@@ -266,11 +304,11 @@ export default {
         let elementId = "danmaku-box-";
         let element = document.getElementById(elementId + i);
         let reply = document.getElementById("reply-" + i);
-        if(element != null){
+        if (element != null) {
           element.style.display = "none";
         }
-        if(reply != null){
-          reply.innerHTML="";
+        if (reply != null) {
+          reply.innerHTML = "";
         }
         this.commentBox[i] = true;
         this.commentBoxIndex[i] = 0;
@@ -316,16 +354,41 @@ export default {
             }
           });
         document.getElementById("danmaku-box-4").style.display = "block";
-        document.getElementById("current-user-comment").innerHTML = "You:&nbsp"+this.input;
+        document.getElementById("current-user-comment").innerHTML = "You:&nbsp" + this.input;
         document.getElementById("reply-4").innerHTML = "";
         this.autoCloseBulletChattingBox(4);
         this.input = "";
         this.playVideo();
       }
     },
-    sendReply(reply){
+    sendOtherComment() {
+      //发送一条评论
+      if (this.textarea == '') {
+        this.openFail("write your comment");
+        return;
+      }
+      if (this.currentUser != null) {
+        //使用post
+        this.$http.post("http://localhost:8081/comment/send_comment", {}, {
+          params: {
+            videoId: this.video.id,
+            commentContent: this.textarea,
+            inBox: 0
+          }
+        })
+          .then((res) => {
+            if (res.data == null || res.data.code != 200) {
+              this.openFail("send fail");
+            } else {
+              this.newCommentId = res.data.data;
+              this.openSuccess("send success");
+            }
+          });
+      }
+    },
+    sendReply(reply) {
       console.log(reply)
-      document.getElementById("reply-"+this.inReply).innerHTML = ">>You:&nbsp"+reply;
+      document.getElementById("reply-" + this.inReply).innerHTML = ">>You:&nbsp" + reply;
     },
     openFail(text) {
       this.$message.error(text);
@@ -425,9 +488,9 @@ p {
 }
 
 .demonstration {
-  font-size: 12px;
+  font-size: 10px;
   color: black;
-  line-height: 14px;
+  line-height: 15px;
 }
 
 .slider {
@@ -466,5 +529,16 @@ p {
   border-bottom: 1px solid #EBEEF5;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+}
+
+.comment-box-bottom {
+  position: relative;
+  height: auto;
+  margin-top: 3%;
+  padding: 1% 5% 2%;
+  width: 90%;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: #EBEEF5 solid 1px;
 }
 </style>
