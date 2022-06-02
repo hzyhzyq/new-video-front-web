@@ -24,6 +24,9 @@
           <el-menu-item index="3" v-if="currentUser.id != null"><a href="/user">{{currentUser.loginName}}</a></el-menu-item>
         </el-menu>
       </div>
+      <div class="middle">
+        <el-input v-model="input" placeholder="Search videos" prefix-icon="el-icon-search"></el-input>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +35,11 @@
 export default {
   name: "my_header",
   props:{currentUser: {},},
+  data(){
+    return{
+      input:""
+    }
+  }
 }
 </script>
 
@@ -55,5 +63,12 @@ a {
   position: absolute;
   top: 0px;
   right: 5%;
+}
+.middle {
+  position: absolute;
+  top: 0px;
+  width: 40%;
+  left: 30%;
+  top:10px;
 }
 </style>
